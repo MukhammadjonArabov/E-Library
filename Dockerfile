@@ -22,7 +22,7 @@ RUN mkdir -p /code/staticfiles /code/media
 
 # Create entrypoint script
 COPY entrypoint.sh /code/
-RUN chmod +x /code/entrypoint.sh
+RUN sed -i 's/\r$//' /code/entrypoint.sh && chmod +x /code/entrypoint.sh
 
 EXPOSE 8000
 
