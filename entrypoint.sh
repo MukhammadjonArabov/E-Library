@@ -39,7 +39,7 @@ python manage.py createcachetable 2>/dev/null || echo "Cache table already exist
 echo "Starting Gunicorn server..."
 exec gunicorn config.wsgi:application \
     --bind 0.0.0.0:8000 \
-    --workers 4 \
+    --workers 2 \
     --worker-class sync \
     --worker-tmp-dir /dev/shm \
     --timeout 120 \

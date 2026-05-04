@@ -36,7 +36,7 @@ services:
   web:
     build: .
     container_name: elibrary_web
-    command: gunicorn config.wsgi:application --bind 0.0.0.0:8000 --workers 4 --timeout 120
+    command: gunicorn config.wsgi:application --bind 0.0.0.0:8000 --workers 2 --timeout 120
     volumes:
       - .:/code
       - static_volume:/code/staticfiles
