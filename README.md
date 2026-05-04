@@ -1,123 +1,56 @@
-# E-Library API System
+# 📚 E-Library API Tizimi
 
-Modern, secure, and performant E-Library management system built with **Django**, **Django Rest Framework (DRF)**, **Redis**, and **PostgreSQL**.
-
-## 🚀 Overview
-
-This project provides a robust API for managing books, users, and transactions. It features JWT authentication, automatic activity logging, and intelligent caching for optimal performance.
-
-### Key Features
-- **Custom User Model**: Extended user profiles with balance management.
-- **JWT Authentication**: Secure stateless authentication using `djangorestframework-simplejwt`.
-- **Book Management**: Advanced filtering (category, author), search, and ordering.
-- **Intelligent Caching**: Book details are cached in Redis to reduce database load.
-- **Secure Transactions**: Atomic purchase logic ensuring balance and stock integrity.
-- **Automatic Logging**: Every API request and system error is recorded both in files and a dedicated Admin Dashboard.
-- **Premium Admin UI**: Modern interface powered by `django-jazzmin`.
-- **Interactive Documentation**: Full OpenAPI documentation with Swagger and Redoc.
+Zamonaviy, xavfsiz va yuqori samarali elektron kutubxona (E-Library) tizimi. Ushbu loyiha **Django**, **Django Rest Framework (DRF)**, **Redis** va **PostgreSQL** texnologiyalari asosida ishlab chiqilgan.
 
 ---
 
-## 🛠 Technology Stack
+## 🚀 Umumiy ma’lumot
+
+Bu loyiha kitoblar, foydalanuvchilar va xarid jarayonlarini boshqarish uchun kuchli API taqdim etadi. Tizim JWT autentifikatsiya, avtomatik loglash va aqlli kesh (cache) orqali maksimal samaradorlikni ta’minlaydi.
+
+### 🔑 Asosiy imkoniyatlar
+
+- **Custom User Model**: Foydalanuvchilar uchun kengaytirilgan profil va balans tizimi
+- **JWT Autentifikatsiya**: `djangorestframework-simplejwt` orqali xavfsiz tizim
+- **Kitoblar boshqaruvi**: Kategoriya va muallif bo‘yicha filter, qidiruv va tartiblash
+- **Aqlli keshlash**: Kitob tafsilotlari Redis’da saqlanadi
+- **Xavfsiz tranzaksiyalar**: Balans va zaxira (stock) tekshiruvi bilan atomic xarid
+- **Avtomatik loglash**: Har bir API so‘rov va xatolik yozib boriladi
+- **Admin panel**: `django-jazzmin` bilan zamonaviy interfeys
+- **API hujjatlar**: Swagger va Redoc orqali interaktiv dokumentatsiya
+
+---
+
+## 🛠 Texnologiyalar
 
 - **Framework**: Django 5.x & Django Rest Framework
-- **Database**: PostgreSQL 15
-- **Cache/Broker**: Redis 7
-- **Auth**: JWT (SimpleJWT)
-- **Docs**: drf-spectacular (Swagger UI / Redoc)
-- **Containerization**: Docker & Docker Compose
-- **Admin Theme**: Jazzmin
+- **Ma’lumotlar bazasi**: PostgreSQL 15
+- **Kesh/Broker**: Redis 7
+- **Autentifikatsiya**: JWT (SimpleJWT)
+- **Dokumentatsiya**: drf-spectacular (Swagger / Redoc)
+- **Konteynerlash**: Docker & Docker Compose
+- **Admin dizayn**: Jazzmin
 
 ---
 
-## 🐳 Docker Deployment (Recommended)
+## 🐳 Docker orqali ishga tushirish (Tavsiya etiladi)
 
-The easiest way to run the project is using Docker. This will automatically set up the Python environment, PostgreSQL database, and Redis cache.
+Loyihani ishga tushirishning eng oson usuli — Docker’dan foydalanish. Bu avtomatik ravishda Python muhit, PostgreSQL va Redis’ni sozlaydi.
 
-### 1. Prerequisites
-Ensure you have **Docker** and **Docker Compose** installed on your system.
+### 1. Talablar
 
-### 2. Setup Environment
-The project comes with a `.env` file configured for Docker. You don't need to change anything for local development.
+Quyidagilar o‘rnatilgan bo‘lishi kerak:
+- Docker
+- Docker Compose
 
-### 3. Start the Application
-Run the following command in the root directory:
+### 2. Environment sozlash
+
+Loyihada `.env` fayl allaqachon sozlangan. Lokal ishlash uchun uni o‘zgartirish shart emas.
+
+### 3. Loyihani ishga tushirish
+
 ```bash
+git clone https://github.com/MukhammadjonArabov/E-Library.git
+cd E-Library
 docker-compose up --build
-```
-
-### 4. Initialize Database & Admin
-Once the containers are running, create a superuser to access the admin panel:
-```bash
 docker-compose exec web python manage.py createsuperuser
-```
-
----
-
-## 📖 API Documentation
-
-Once the project is running, you can access the interactive documentation at:
-
-- **Swagger UI**: [http://localhost:8000/api/docs/](http://localhost:8000/api/docs/) (Recommended for testing)
-- **Redoc**: [http://localhost:8000/api/redoc/](http://localhost:8000/api/redoc/)
-
----
-
----
-
-## 🚀 API Endpoints
-
-### 🔐 Authentication
-- `POST /api/auth/register/` - User registration
-- `POST /api/auth/login/` - JWT Login (Get tokens)
-
-### 📚 Books
-- `GET /api/books/` - List books (Filter by `category`, `author`; Search by `title`, `author__name`)
-- `GET /api/books/{id}/` - Book detail (Cached in Redis)
-
-### 💰 Sales
-- `POST /api/buy/` - Purchase book(s)
-  - **Body**: `{"book_id": 1, "quantity": 2}`
-  - **Logic**: Validates balance and stock, performs atomic update.
-
----
-
-## 🛡 Authentication Guide
-
-1. **Register**: `POST /api/auth/register/`
-2. **Login**: `POST /api/auth/login/` (Returns an `access` and `refresh` token).
-3. **Use Token**: For all protected endpoints, include the token in the header:
-   ```
-   Authorization: Bearer <your_access_token>
-   ```
-
----
-
-## 📋 System Logs
-
-The system features two types of logging:
-1.  **File Logs**:
-    - `logs/all.log`: Comprehensive INFO/ERROR logs.
-    - `logs/error.log`: Critical error logs only.
-2.  **Admin Dashboard Logs**:
-    - Navigate to `http://localhost:8000/admin/` -> **System Logs**.
-    - Monitor all GET/POST requests and transaction errors in real-time.
-
----
-
-## 📂 Project Structure
-
-```text
-├── bron/               # Main application logic
-│   ├── middleware.py   # Custom logging middleware
-│   ├── models.py       # Database models (CustomUser, Book, LogEntry, etc.)
-│   ├── views.py        # API logic & Caching
-│   └── serializers.py  # Data validation
-├── config/             # Project configuration (settings, urls)
-├── logs/               # Log files (ignored by git)
-├── Dockerfile          # Docker build instructions
-└── docker-compose.yml  # Service orchestration
-```
-
-## 📄 License
-This project is open-source. Feel free to use and modify.
