@@ -8,3 +8,5 @@ drf-spectacular
 django-filter
 python-dotenv
 django-jazzmin
+gunicorn
+django-cors-headers
