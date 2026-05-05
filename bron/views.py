@@ -42,18 +42,9 @@ class BookDetailView(APIView):
     permission_classes = [IsAuthenticated]
     
     def get(self, request, pk):
-        cache_key = f'book_detail_{pk}'
-        book_data = cache.get(cache_key)
-        
-        if not book_data:
-            book = get_object_or_404(Book, pk=pk)
-            book_data = BookSerializer(book).data
-            cache.set(cache_key, book_data, timeout=300) # 5 minutes
-            logger.info(f"Book {pk} fetched from database and cached.")
-        else:
-            logger.info(f"Book {pk} fetched from cache.")
-            
-        return Response(book_data)
+        book = get_object_or_404(Book, pk=pk)
+        serializer = BookSerializer(book)
+        return Response(serializer.data)
 
 # D. Savdo jarayoni (Logika)
 @extend_schema(
